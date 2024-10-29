@@ -1,2 +1,8 @@
+- added templates (in pages app)
+- added static (for pages app to serve html)
+
 - required for testing:
 > pip install httpx
+
+- adding database (will be used for auth app) (will be updated from sqlalchemy to sqlmodel)
+- requires python-dotenv, sqlalchemy, sqlmodel
