@@ -17,3 +17,10 @@ def index(request: Request):
     return templates.TemplateResponse(
         request=request, name='pages/index.html', context={'message': "HELLO"}
     )
+
+
+
+# test this route to check if pytest works
+@router.get('/test')
+def test_route(request: Request):
+    return 'hello world'

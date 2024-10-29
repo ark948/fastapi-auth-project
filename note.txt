@@ -1,0 +1,2 @@
+- required for testing:
+> pip install httpx
