@@ -6,3 +6,6 @@
 
 - adding database (will be used for auth app) (will be updated from sqlalchemy to sqlmodel)
 - requires python-dotenv, sqlalchemy, sqlmodel
+
+-> for input (request) and output (response) control --> use schema
+-> for creation, deletion, update (crud) actions --> use model

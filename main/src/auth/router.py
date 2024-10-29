@@ -1,24 +1,24 @@
-from src.auth.schemas import UserSchema
+from src.auth.schemas import ShowUser, CreateUser
 from src.auth.models import User
+from src.auth import crud
 from src.db import SessionDep
 from fastapi import (
     APIRouter,
-    Request,
-    HTTPException,
-    status
 )
 
 
 
 router = APIRouter(
-    prefix='/auth'
+    prefix='/auth',
+    tags=['auth']
 )
 
 
-@router.post('/create', response_model=UserSchema)
-def create_user(request: UserSchema, session: SessionDep):
-    new_user = User(email=request.email, password=request.password)
-    session.add(new_user)
-    session.commit()
-    session.refresh(new_user)
-    return new_user
+@router.post('/create', response_model=CreateUser)
+def create_user(request: CreateUser, session: SessionDep):
+    return crud.create(request, session)
+
+
+@router.get('/{id}', response_model=ShowUser)
+def get_user(id: int, session: SessionDep):
+    return crud.show(id, session)
