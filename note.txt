@@ -35,3 +35,5 @@ OAuth2 uses form data to send username and password (uses python-multipart)
 
 
 (NOTE: DO NOT RETURN HTTPException, RAISE it)
+
+session must come from request (pass along)

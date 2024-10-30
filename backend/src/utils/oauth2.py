@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
 import jwt
 from jwt.exceptions import InvalidTokenError
-from src.auth import crud as user_crud
+from src.apps.auth import crud as user_crud
 from src.utils.tokens import TokenData
 from src.db import SessionDep
 from src import config

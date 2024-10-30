@@ -1,6 +1,6 @@
 from datetime import timedelta
-from src.auth.schemas import ShowUser, CreateUser
-from src.auth import crud
+from src.apps.auth.schemas import ShowUser, CreateUser
+from src.apps.auth import crud
 from src import config
 from src.db import SessionDep
 from fastapi.security import OAuth2PasswordRequestForm

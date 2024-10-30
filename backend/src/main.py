@@ -7,8 +7,8 @@ from fastapi.staticfiles import StaticFiles
 
 # local imports
 from src.db import create_db_and_tables
-from src.pages.router import router as pages_router
-from src.auth.router import router as auth_router
+from src.apps.pages.router import router as pages_router
+from src.apps.auth.router import router as auth_router
 from src.utils.oauth2 import oauth2_scheme
 
 

@@ -1,8 +1,4 @@
-from enum import Enum
 from pydantic import BaseModel, ConfigDict
-
-# get user
-# create user
 
 
 class ShowUser(BaseModel):
