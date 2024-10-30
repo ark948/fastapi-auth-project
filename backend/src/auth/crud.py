@@ -7,8 +7,7 @@ from src.utils.hash import hash_plain_password
 
 
 def create(request: CreateUser, db: SessionDep):
-    hashed_password = hash_plain_password(request.password)
-    new_user = User(email=request.email, password=hashed_password)
+    new_user = User(email=request.email, password=hash_plain_password(request.password))
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
