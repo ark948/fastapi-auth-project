@@ -6,7 +6,8 @@ from src.db import SessionDep
 from fastapi.security import OAuth2PasswordRequestForm
 from src.utils.tokens import Token, create_access_token
 from src.utils.oauth2 import authenticate_user
-from typing import Annotated
+from typing import Annotated, List
+from src.apps.auth.models import User
 from fastapi import (
     APIRouter,
     status,
@@ -21,24 +22,29 @@ router = APIRouter(
 )
 
 
+@router.get('/get-all-users', response_model=List[ShowUser])
+def get_all_users(session: SessionDep):
+    return crud.get_all(session)
+
+
 @router.post('/create', response_model=CreateUser)
-def create_user(request: CreateUser, session: SessionDep):
+def create_user(request: CreateUser, session: SessionDep) -> User:
     return crud.create(request, session)
 
 
 @router.get('/{id}', response_model=ShowUser)
-def get_user(id: int, session: SessionDep):
+def get_user(id: int, session: SessionDep) -> User:
     return crud.show(id, session)
 
 
 @router.put('/{id}')
-def update_user(id: int):
-    pass
+def update_user(id: int, session: SessionDep) -> dict:
+    return crud.update(id, session)
 
 
 @router.delete('/{id}')
-def delete_user(id: int):
-    pass
+def delete_user(id: int, session: SessionDep) -> dict:
+    return crud.delete(id, session)
 
 
 @router.post("/login")

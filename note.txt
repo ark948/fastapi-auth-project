@@ -23,7 +23,14 @@ OAuth2 uses form data to send username and password (uses python-multipart)
 
 
 - first password hashing (done)
-- then login process
+- then login process (done)
+- protecting routes 
+- getting current user
+
+remaining: 
+a more complete user model with profile
+account verification
+account recovery (email and password)
 
 
 # tokenUrl will be the URL that frontend will send username and password...
