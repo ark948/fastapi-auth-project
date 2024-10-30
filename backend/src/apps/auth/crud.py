@@ -24,6 +24,12 @@ def show(id: int, session: SessionDep):
         )
     return user
 
+def update():
+    pass
+
+def delete():
+    pass
+
 
 def get_user_from_email(email: str, db: SessionDep):
     statement = select(User).where(User.email == email)

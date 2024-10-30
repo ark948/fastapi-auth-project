@@ -31,6 +31,16 @@ def get_user(id: int, session: SessionDep):
     return crud.show(id, session)
 
 
+@router.put('/{id}')
+def update_user(id: int):
+    pass
+
+
+@router.delete('/{id}')
+def delete_user(id: int):
+    pass
+
+
 @router.post("/login")
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
