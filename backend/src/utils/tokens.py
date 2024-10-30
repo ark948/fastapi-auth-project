@@ -1,5 +1,6 @@
 from datetime import timedelta, timezone, datetime
-from main import config
+from pydantic import BaseModel
+from src import config
 import jwt
 
 
@@ -19,3 +20,10 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    email: str | None = None

@@ -22,8 +22,16 @@ OAuth2 uses form data to send username and password (uses python-multipart)
 - tokens are not kept in database, they only will be verified upon each request
 
 
-- first password hashing
+- first password hashing (done)
 - then login process
+
+
+# tokenUrl will be the URL that frontend will send username and password...
+# to get a token
+
+
+# get_current_usre -> get_user -> user_crud
+# login_for_access -> authenticate_user
 
 
 (NOTE: DO NOT RETURN HTTPException, RAISE it)

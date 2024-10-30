@@ -14,10 +14,10 @@ from src.utils.oauth2 import oauth2_scheme
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("--> Server started.")
+    print("\t  --> Server started.")
     create_db_and_tables()
     yield
-    print("--> Server shutting down.")
+    print("\t  --> Server shutting down.")
 
 
 app = FastAPI(lifespan=lifespan)

@@ -15,14 +15,22 @@ def create(request: CreateUser, db: SessionDep):
 
 
 def show(id: int, session: SessionDep):
+    print(session)
     user = session.get(User, id)
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with {id} was not found.")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail=f"User with {id} was not found."
+        )
     return user
 
 
-def get_user_from_email(email: str, session: SessionDep):
+def get_user_from_email(email: str, db: SessionDep):
     statement = select(User).where(User.email == email)
-    results = session.exec(statement)
+    results = db.exec(statement)
     for user in results:
+        if not user:
+            raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail=f"User with {email} was not found.")
         return user
