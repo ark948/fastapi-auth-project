@@ -3,7 +3,7 @@ from sqlmodel import (
     SQLModel,
     Session
 )
-import config
+from src import config
 from typing import Annotated
 from fastapi import Depends
 

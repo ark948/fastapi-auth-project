@@ -9,3 +9,21 @@
 
 -> for input (request) and output (response) control --> use schema
 -> for creation, deletion, update (crud) actions --> use model
+
+OAuth2 uses form data to send username and password (uses python-multipart)
+
+- adding actual authentication
+- fastapi doc is just filled with fake dummy examples and everything in one file
+- first, we need to implement password hashing (we will use passlib)
+> pip install "passlib[bcrypt]" (bcrypt is the recommended hashing algorithm)
+- create a passlib context (this is what will be used to hash and verify passwords)
+- python-jose package may also be required
+- also pyjwt
+- tokens are not kept in database, they only will be verified upon each request
+
+
+- first password hashing
+- then login process
+
+
+(NOTE: DO NOT RETURN HTTPException, RAISE it)

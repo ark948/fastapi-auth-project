@@ -1,11 +1,9 @@
 from src.auth.schemas import ShowUser, CreateUser
-from src.auth.models import User
 from src.auth import crud
 from src.db import SessionDep
 from fastapi import (
     APIRouter,
 )
-
 
 
 router = APIRouter(
