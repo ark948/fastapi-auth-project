@@ -16,7 +16,8 @@ def create(request: CreateUser, db: SessionDep):
         email=request.email,
         first_name=request.first_name,
         last_name=request.last_name,
-        password=hash_plain_password(request.password)
+        password=hash_plain_password(request.password),
+        is_active=request.is_active
         )
     db.add(new_user)
     db.commit()

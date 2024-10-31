@@ -1,10 +1,11 @@
 from sqlmodel import Field, SQLModel
-from typing import Optional
+from typing import Optional, Required
 
 
 class UserBase(SQLModel):
     email: str = Field(index=True)
     password: str
+    is_active: bool = Field(default=False)
 
 
 class User(UserBase, table=True):

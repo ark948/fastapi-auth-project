@@ -32,7 +32,7 @@ a more complete user model with profile
 account verification
 account recovery (email and password)
 
-database migration with alembic:
+database migration with alembic (done):
 > pip install alembic
 > alembic init alembic
 > add import SQLModel to alembic/env.py file
