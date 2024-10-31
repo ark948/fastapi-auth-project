@@ -7,6 +7,7 @@ class ShowUser(BaseModel):
     email: str
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+    is_active: bool = False
     model_config = ConfigDict(form_attributes=True)
 
 
@@ -15,11 +16,19 @@ class CreateUser(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     password: str
-    is_active: int = False
+    is_active: bool = False
     model_config = ConfigDict(form_attributes=True)
 
 
-class UpdateUser(BaseModel):
-    email: str
-    first_name: str
-    last_name: str
+from sqlmodel import SQLModel
+
+
+class GetUserSQLModel(SQLModel):
+    id: int
+
+class UpdateUserSQLModel(SQLModel):
+    email: str | None = None
+    first_name: str | None = None
+    last_name: str | None = None
+    password: str | None = None
+    is_active: bool | None = None

@@ -1,5 +1,5 @@
 from fastapi import HTTPException, status
-from src.apps.auth.schemas import CreateUser
+from src.apps.auth.schemas import CreateUser, UpdateUserSQLModel
 from src.apps.auth.models import User
 from src.db import SessionDep
 from sqlmodel import select
@@ -34,19 +34,19 @@ def show(id: int, session: SessionDep):
         )
     return user
 
-def update(id: int, new_email: str, old_password: str, new_password: str, session: SessionDep):
-    user = session.get(User, id)
-    if not user:
+def update(id: int, request: UpdateUserSQLModel, session: SessionDep):
+    db_user = session.get(User, id)
+    if not db_user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
             detail=f"User with {id} was not found."
         )
-    if verify_password(old_password, user.password):
-        if new_password:
-            user.password = hash_plain_password(new_password)
-        if new_email:
-            user.email = new_email
-        return {"message": f"User with {id} updated."}
+    user_data = request.model_dump(exclude_unset=True)
+    db_user.sqlmodel_update(user_data)
+    session.add(db_user)
+    session.commit()
+    session.refresh(db_user)
+    return {"message": f"User with {id} updated."}
     
 
 def delete(id: int, session: SessionDep):

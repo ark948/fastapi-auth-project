@@ -54,6 +54,10 @@ first_name: str | None = None # first_name is str and can be None, default also 
 # tokenUrl will be the URL that frontend will send username and password...
 # to get a token
 
+auth idea:
+actual users with interact with Profile model,
+admin and staff with User model
+
 
 # get_current_usre -> get_user -> user_crud
 # login_for_access -> authenticate_user

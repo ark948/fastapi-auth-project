@@ -1,5 +1,9 @@
 from datetime import timedelta
-from src.apps.auth.schemas import ShowUser, CreateUser
+from src.apps.auth.schemas import (
+    ShowUser,
+    CreateUser,
+    UpdateUserSQLModel
+)
 from src.apps.auth import crud
 from src import config
 from src.db import SessionDep
@@ -37,9 +41,11 @@ def get_user(id: int, session: SessionDep) -> User:
     return crud.show(id, session)
 
 
-@router.put('/{id}')
-def update_user(id: int, session: SessionDep) -> dict:
-    return crud.update(id, session)
+# use patch for user edit profile (put for auth or admins)
+# for this, we will use specifically use sqlmodel schema (not pydantic)
+@router.patch('/{id}', status_code=status.HTTP_202_ACCEPTED)
+def update_user(id: int, request: UpdateUserSQLModel, session: SessionDep) -> dict:
+    return crud.update(id, request, session)
 
 
 @router.delete('/{id}')
