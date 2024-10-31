@@ -26,17 +26,17 @@ router = APIRouter(
 )
 
 
-@router.get('/get-all-users', response_model=List[ShowUser])
+@router.get('/get-all-users', response_model=List[ShowUser], status_code=status.HTTP_200_OK)
 def get_all_users(session: SessionDep):
     return crud.get_all(session)
 
 
-@router.post('/create', response_model=CreateUser)
+@router.post('/create', response_model=CreateUser, status_code=status.HTTP_201_CREATED)
 def create_user(request: CreateUser, session: SessionDep) -> User:
     return crud.create(request, session)
 
 
-@router.get('/{id}', response_model=ShowUser)
+@router.get('/{id}', response_model=ShowUser, status_code=status.HTTP_200_OK)
 def get_user(id: int, session: SessionDep) -> User:
     return crud.show(id, session)
 
@@ -53,7 +53,7 @@ def delete_user(id: int, session: SessionDep) -> dict:
     return crud.delete(id, session)
 
 
-@router.post("/login")
+@router.post("/login", status_code=status.HTTP_200_OK)
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: SessionDep

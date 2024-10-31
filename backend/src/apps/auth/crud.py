@@ -50,7 +50,7 @@ def update(id: int, request: UpdateUserSQLModel, session: SessionDep):
     return {"message": f"User with {id} updated."}
     
 
-def delete(id: int, session: SessionDep):
+def delete(id: int, session: SessionDep) -> None:
     user = session.get(User, id)
     if not user:
         raise HTTPException(
@@ -59,7 +59,7 @@ def delete(id: int, session: SessionDep):
         )
     session.delete(user)
     session.commit()
-    return {"message": f"User with {id} deleted."}
+    return {"ok": True}
 
 
 def get_user_from_email(email: str, db: SessionDep) -> User:
