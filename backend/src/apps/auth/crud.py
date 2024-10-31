@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
-from src.apps.auth.schemas import CreateUser, UpdateUserSQLModel
+from src.apps.auth.schemas import CreateUser
+from src.apps.auth.sqlmodels import UpdateUserSQLModel
 from src.apps.auth.models import User
 from src.db import SessionDep
 from sqlmodel import select

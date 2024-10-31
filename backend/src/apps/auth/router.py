@@ -2,8 +2,8 @@ from datetime import timedelta
 from src.apps.auth.schemas import (
     ShowUser,
     CreateUser,
-    UpdateUserSQLModel
 )
+from src.apps.auth.sqlmodels import UpdateUserSQLModel
 from src.apps.auth import crud
 from src import config
 from src.db import SessionDep
