@@ -32,6 +32,8 @@ a more complete user model with profile
 account verification
 account recovery (email and password)
 
+database migration with alembic
+
 
 # tokenUrl will be the URL that frontend will send username and password...
 # to get a token

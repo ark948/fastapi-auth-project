@@ -4,8 +4,8 @@ from src.apps.auth import crud
 from src import config
 from src.db import SessionDep
 from fastapi.security import OAuth2PasswordRequestForm
-from src.utils.tokens import Token, create_access_token
-from src.utils.oauth2 import authenticate_user
+from src.apps.auth.tokens import Token, create_access_token
+from src.apps.auth.oauth2 import authenticate_user
 from typing import Annotated, List
 from src.apps.auth.models import User
 from fastapi import (

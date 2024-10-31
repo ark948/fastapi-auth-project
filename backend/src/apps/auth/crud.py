@@ -3,7 +3,7 @@ from src.apps.auth.schemas import CreateUser
 from src.apps.auth.models import User
 from src.db import SessionDep
 from sqlmodel import select
-from src.utils.hash import hash_plain_password, verify_password
+from src.apps.auth.hash import hash_plain_password, verify_password
 
 def get_all(session: SessionDep):
     statement = select(User)

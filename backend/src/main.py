@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from src.db import create_db_and_tables
 from src.apps.pages.router import router as pages_router
 from src.apps.auth.router import router as auth_router
-from src.utils.oauth2 import oauth2_scheme
+from src.apps.auth.oauth2 import oauth2_scheme
 
 
 @asynccontextmanager

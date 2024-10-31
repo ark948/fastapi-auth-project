@@ -4,10 +4,10 @@ from typing import Annotated
 import jwt
 from jwt.exceptions import InvalidTokenError
 from src.apps.auth import crud as user_crud
-from src.utils.tokens import TokenData
+from src.apps.auth.tokens import TokenData
 from src.db import SessionDep
 from src import config
-from src.utils.hash import verify_password
+from src.apps.auth.hash import verify_password
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
