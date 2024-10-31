@@ -32,7 +32,23 @@ a more complete user model with profile
 account verification
 account recovery (email and password)
 
-database migration with alembic
+database migration with alembic:
+> pip install alembic
+> alembic init alembic
+> add import SQLModel to alembic/env.py file
+> import models in alembic/env.py file
+> update the sqlalchemy.url in alembic.ini file
+- run:
+> alembic revision --autogenerate -m "init"
+> alembic upgrade head
+> ensure it works
+(in SQLModel <type> | None is equal to Optional)
+first_name: str | None = None # first_name is str and can be None, default also none
+> make small change (added first_name and last_name)
+- create new migration
+> alembic revision --autogenerate -m "add name"
+> alembic upgrade head
+- ensure it works (do not forget to update the schema)
 
 
 # tokenUrl will be the URL that frontend will send username and password...

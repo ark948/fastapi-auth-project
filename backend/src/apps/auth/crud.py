@@ -12,7 +12,12 @@ def get_all(session: SessionDep):
 
 
 def create(request: CreateUser, db: SessionDep):
-    new_user = User(email=request.email, password=hash_plain_password(request.password))
+    new_user = User(
+        email=request.email,
+        first_name=request.first_name,
+        last_name=request.last_name,
+        password=hash_plain_password(request.password)
+        )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
