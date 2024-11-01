@@ -1,19 +1,23 @@
-from fastapi import (Depends, HTTPException, status)
-from fastapi.security import OAuth2PasswordBearer
-from typing import Annotated
-import jwt
-from jwt.exceptions import InvalidTokenError
+# local imports
 from src.apps.auth import crud as user_crud
 from src.apps.auth.tokens import TokenData
 from src.db import SessionDep
-from src import config
 from src.apps.auth.hash import verify_password
+from src.apps.auth.constants import (
+    SECRET_KEY, ALGORITHM
+)
+
+# other imports
+from fastapi import (
+    Depends, HTTPException, status
+)
+from fastapi.security import OAuth2PasswordBearer
+from typing import Annotated
+from jwt.exceptions import InvalidTokenError
+import jwt
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
-
-SECRET_KEY = config.SECRET_KEY
-ALGORITHM = config.ALGORITHM
-ACCESS_TOKEN_EXPIRE_MINUTES = config.ACCESS_TOKEN_EXPIRE_MINUTES
 
 
 def get_user(email: str, session: SessionDep):

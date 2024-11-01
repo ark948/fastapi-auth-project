@@ -1,23 +1,26 @@
-from datetime import timedelta
-from src.apps.auth.schemas import (
-    ShowUser,
-    CreateUser,
-)
-from src.apps.auth.sqlmodels import UpdateUserSQLModel
-from src.apps.auth import crud
-from src import config
-from src.db import SessionDep
-from fastapi.security import OAuth2PasswordRequestForm
+# local imports
+from src.apps.auth.models import User
 from src.apps.auth.tokens import Token, create_access_token
 from src.apps.auth.oauth2 import authenticate_user
-from typing import Annotated, List
-from src.apps.auth.models import User
-from fastapi import (
-    APIRouter,
-    status,
-    HTTPException,
-    Depends
+from src.apps.auth.sqlmodels import UpdateUserSQLModel
+from src.apps.auth import crud
+from src.db import SessionDep
+from src.apps.auth.schemas import (
+    ShowUser, CreateUser,
 )
+from src.apps.auth.constants import (
+    ACCESS_TOKEN_EXPIRE_MINUTES
+)
+
+# fastapi imports
+from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import (
+    APIRouter, status, HTTPException, Depends
+)
+
+# other imports
+from typing import Annotated, List
+from datetime import timedelta
 
 
 router = APIRouter(
@@ -65,7 +68,7 @@ async def login_for_access_token(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=int(config.ACCESS_TOKEN_EXPIRE_MINUTES))
+    access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
     access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )

@@ -1,10 +1,13 @@
-from fastapi import HTTPException, status
+# local imports
 from src.apps.auth.schemas import CreateUser
 from src.apps.auth.sqlmodels import UpdateUserSQLModel
 from src.apps.auth.models import User
+from src.apps.auth.hash import hash_plain_password
 from src.db import SessionDep
+
+# other imports
+from fastapi import HTTPException, status
 from sqlmodel import select
-from src.apps.auth.hash import hash_plain_password, verify_password
 
 def get_all(session: SessionDep):
     statement = select(User)

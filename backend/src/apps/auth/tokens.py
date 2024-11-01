@@ -1,12 +1,12 @@
 from datetime import timedelta, timezone, datetime
 from pydantic import BaseModel
-from src import config
 import jwt
 
+# local imports
+from src.apps.auth.constants import (
+    SECRET_KEY, ALGORITHM
+)
 
-SECRET_KEY = config.SECRET_KEY
-ALGORITHM = config.ALGORITHM
-ACCESS_TOKEN_EXPIRE_MINUTES = config.ACCESS_TOKEN_EXPIRE_MINUTES
 
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
