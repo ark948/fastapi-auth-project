@@ -1,7 +1,5 @@
 from sqlmodel import (
-    create_engine,
-    SQLModel,
-    Session
+    create_engine, SQLModel, Session
 )
 from src import config
 from typing import Annotated
