@@ -34,8 +34,8 @@ app.include_router(users_router)
 
 # test this route to check if pytest works
 @app.get('/test')
-def test_route(request: Request):
-    return 'hello world'
+def test_route(request: Request) -> dict:
+    return {"message": "Hello World test"}
 
 
 # demonstration purposes (authorize button must appear)
