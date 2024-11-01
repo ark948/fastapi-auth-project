@@ -1,4 +1,4 @@
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, SQLModel, Relationship
 from typing import Optional, Required
 
 
@@ -12,3 +12,4 @@ class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True, index=True)
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+    vcode: str = Field(default=None)

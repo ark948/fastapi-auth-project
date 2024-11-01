@@ -3,6 +3,7 @@ from src.apps.auth.schemas import CreateUser
 from src.apps.auth.sqlmodels import UpdateUserSQLModel
 from src.apps.auth.models import User
 from src.apps.auth.hash import hash_plain_password
+from src.apps.auth.utils import generateOtp
 from src.db import SessionDep
 
 # other imports
@@ -17,12 +18,13 @@ def get_all(session: SessionDep):
 
 def create(request: CreateUser, db: SessionDep):
     new_user = User(
-        email=request.email,
-        first_name=request.first_name,
-        last_name=request.last_name,
-        password=hash_plain_password(request.password),
-        is_active=request.is_active
+            email=request.email,
+            first_name=request.first_name,
+            last_name=request.last_name,
+            password=hash_plain_password(request.password),
+            is_active=request.is_active
         )
+    new_user.vcode = generateOtp()
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

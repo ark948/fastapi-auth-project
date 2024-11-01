@@ -54,10 +54,6 @@ first_name: str | None = None # first_name is str and can be None, default also 
 # tokenUrl will be the URL that frontend will send username and password...
 # to get a token
 
-auth idea:
-actual users with interact with Profile model,
-admin and staff with User model
-
 
 # get_current_usre -> get_user -> user_crud
 # login_for_access -> authenticate_user
@@ -66,3 +62,14 @@ admin and staff with User model
 (NOTE: DO NOT RETURN HTTPException, RAISE it)
 
 session must come from request (pass along)
+
+
+- account verification process (done, but not very elegant - also requires expiration date and console email backend):
+- added a vcode field to User model
+> alembic revision --autogenerate -m "user_vcode"
+> alembic upgrade head
+- Upon creation of a new user, vcode will be randomly generated and assigned
+- code must be email to user
+- using simple post route, vcode will be submitted
+- if vcode is correct, user 'is_active' field will be set to true
+- if process was successful, vcode will be changed to None

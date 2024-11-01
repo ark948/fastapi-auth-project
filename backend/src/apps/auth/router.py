@@ -6,7 +6,7 @@ from src.apps.auth.sqlmodels import UpdateUserSQLModel
 from src.apps.auth import crud
 from src.db import SessionDep
 from src.apps.auth.schemas import (
-    ShowUser, CreateUser,
+    ShowUser, CreateUser, VerifyUser
 )
 from src.apps.auth.constants import (
     ACCESS_TOKEN_EXPIRE_MINUTES
@@ -25,7 +25,7 @@ from datetime import timedelta
 
 router = APIRouter(
     prefix='/auth',
-    tags=['auth']
+    tags=['Auth']
 )
 
 
@@ -54,6 +54,27 @@ def update_user(id: int, request: UpdateUserSQLModel, session: SessionDep) -> di
 @router.delete('/{id}')
 def delete_user(id: int, session: SessionDep) -> dict:
     return crud.delete(id, session)
+
+
+@router.post('/verify-user/{id}', status_code=status.HTTP_200_OK)
+def verify_user_account(id: int, request: VerifyUser, session: SessionDep) -> dict:
+    db_user = session.get(User, id)
+    if not db_user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail=f"User with {id} was not found."
+        )
+    if db_user.is_active == False and db_user.vcode == request.vcode:
+        db_user.is_active = True
+        db_user.vcode = ""
+        session.add(db_user)
+        session.commit()
+        session.refresh(db_user)   
+        return {'message': f'Verification Successful, for {db_user.email}.'}
+    elif db_user.is_active == True:
+        return {"message": "User already verified."}
+    else:
+        return {"message": "Code is invalid."}
 
 
 @router.post("/login", status_code=status.HTTP_200_OK)

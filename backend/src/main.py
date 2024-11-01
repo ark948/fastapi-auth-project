@@ -10,6 +10,7 @@ from src.db import create_db_and_tables
 from src.apps.pages.router import router as pages_router
 from src.apps.auth.router import router as auth_router
 from src.apps.auth.oauth2 import oauth2_scheme
+from src.apps.users.router import router as users_router
 
 
 @asynccontextmanager
@@ -25,6 +26,8 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(auth_router)
 app.include_router(pages_router)
+app.include_router(users_router)
+
 
 
 # test this route to check if pytest works
