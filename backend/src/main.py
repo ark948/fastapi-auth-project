@@ -2,8 +2,10 @@ from contextlib import asynccontextmanager
 from typing import Annotated
 
 # fastapi imports
-from fastapi import (FastAPI, Request, Depends)
 from fastapi.staticfiles import StaticFiles
+from fastapi import (
+    FastAPI, Request, Depends
+)
 
 # local imports
 from src.db import create_db_and_tables
