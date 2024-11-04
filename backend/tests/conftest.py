@@ -19,7 +19,7 @@ from src.apps.auth.models import User
 @pytest.fixture(name='session')
 def session_fixture():
     engine = create_engine(
-        "sqlite:///test_db.db",
+        "sqlite://",
         connect_args={"check_same_thread": False},
         poolclass=StaticPool
     )
