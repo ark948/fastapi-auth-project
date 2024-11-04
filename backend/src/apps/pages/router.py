@@ -14,6 +14,11 @@ templates = Jinja2Templates(directory='templates')
 TemplateResponse = templates.TemplateResponse
 
 
+@router.get('/test-route')
+def test_route():
+    return {'message': "Testing pages app..."}
+
+
 @router.get('/', response_class=HTMLResponse)
 def index(request: Request):
     return TemplateResponse(
