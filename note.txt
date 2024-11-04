@@ -80,6 +80,8 @@ pytest fixtures: functions that will run before each test, they have different s
 The fixture scope defines how long a fixture will be available during the test session.
 a conftest can be used to share fixtures
 fixtures can be called by other fixtures as well, this is called dependency injection (not recommended)
+- to run pytest with print statements
+> pytest -s
 
 
 adding registration form (may not work):

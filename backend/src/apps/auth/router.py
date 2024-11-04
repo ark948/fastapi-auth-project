@@ -29,6 +29,11 @@ router = APIRouter(
 )
 
 
+@router.get('/test-route')
+def test_route():
+    return {'message': "Testing auth app..."}
+
+
 @router.get('/get-all-users', response_model=List[ShowUser], status_code=status.HTTP_200_OK)
 def get_all_users(session: SessionDep):
     return crud.get_all(session)
