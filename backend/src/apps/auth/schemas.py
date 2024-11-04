@@ -1,10 +1,12 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, EmailStr
 from typing import Optional
+
+# EmailStr --> pip install email-validator
 
 
 class ShowUser(BaseModel):
     id: int
-    email: str
+    email: EmailStr
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     is_active: bool = False
@@ -13,7 +15,7 @@ class ShowUser(BaseModel):
 
 
 class CreateUser(BaseModel):
-    email: str
+    email: EmailStr
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     password: str
