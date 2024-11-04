@@ -40,7 +40,7 @@ def test_route(request: Request) -> dict:
 
 # demonstration purposes (authorize button must appear)
 @app.get('/auth-req')
-def secure_route(token: Annotated[str, Depends(oauth2_scheme)]):
+def secure_route(token: Annotated[str, Depends(oauth2_scheme)]) -> dict:
     return {'token': token}
 
 

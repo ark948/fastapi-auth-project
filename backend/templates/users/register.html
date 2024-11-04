@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+
+{% block content %}
+    Register page:
+    {% if form %}
+    <form method="POST">
+        {{ form.email.label }}: {{ form.email() }}
+        {{ form.password.label }}: {{ form.password() }}
+    </form>
+    {% else %}
+        <p>was unable to render form</p>
+    {% endif %}
+{% endblock content %}

@@ -73,3 +73,16 @@ session must come from request (pass along)
 - using simple post route, vcode will be submitted
 - if vcode is correct, user 'is_active' field will be set to true
 - if process was successful, vcode will be changed to None
+
+
+problme in testing: all examples and online tutorials are using sqlalchemy and not sqlmodel (on temporary pause)
+pytest fixtures: functions that will run before each test, they have different scopes (function, class, module, session scope)
+The fixture scope defines how long a fixture will be available during the test session.
+a conftest can be used to share fixtures
+fixtures can be called by other fixtures as well, this is called dependency injection (not recommended)
+
+
+adding registration form (may not work):
+- pip install wtforms
+- added forms.py to users app
+- register.html
