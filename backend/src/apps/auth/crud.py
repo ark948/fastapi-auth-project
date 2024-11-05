@@ -10,13 +10,13 @@ from src.db import SessionDep
 from fastapi import HTTPException, status
 from sqlmodel import select
 
-def get_all(session: SessionDep):
+def get_all(session: SessionDep) -> list:
     statement = select(User)
-    results = session.exec(statement)
+    results = session.exec(statement).all()
     return results
 
 
-def create(request: CreateUser, db: SessionDep):
+def create(request: CreateUser, db: SessionDep) -> User:
     new_user = User(
             email=request.email,
             first_name=request.first_name,
@@ -31,7 +31,7 @@ def create(request: CreateUser, db: SessionDep):
     return new_user
 
 
-def show(id: int, session: SessionDep):
+def show(id: int, session: SessionDep) -> User:
     user = session.get(User, id)
     if not user:
         raise HTTPException(
@@ -40,7 +40,7 @@ def show(id: int, session: SessionDep):
         )
     return user
 
-def update(id: int, request: UpdateUserSQLModel, session: SessionDep):
+def update(id: int, request: UpdateUserSQLModel, session: SessionDep) -> dict:
     db_user = session.get(User, id)
     if not db_user:
         raise HTTPException(
