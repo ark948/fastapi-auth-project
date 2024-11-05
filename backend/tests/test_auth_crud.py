@@ -29,6 +29,7 @@ def test_crud_get_all(session):
     assert results[0].email == 'test1@test.com'
     assert results[1].id == 2
     assert results[1].email == 'test2@test.com'
+    assert type(results) == list
 
 
 def test_crud_create(session):
@@ -38,6 +39,7 @@ def test_crud_create(session):
     db_user = session.get(User, 1)
     assert db_user.email == user.email
     assert result == db_user
+    assert type(result) == User
 
 
 def test_crud_show(session):
@@ -48,6 +50,7 @@ def test_crud_show(session):
     db_user = show(1, session)
     assert user.email == db_user.email
     assert db_user == user
+    assert type(db_user) == User
 
 
 def test_crud_update(session):
@@ -67,6 +70,7 @@ def test_crud_update(session):
     assert db_user.first_name == 'Neal'
     assert db_user.last_name == 'Goldman'
     assert db_user.email == 'test1@test.com'
+    assert type(updateMessage) == dict
 
 
 def test_crud_delete(session):
@@ -82,6 +86,7 @@ def test_crud_delete(session):
 
     users_list = get_all(session)
     assert users_list == []
+    assert type(message) == dict
 
 
 def test_crud_get_user_from_email(session):
@@ -96,3 +101,4 @@ def test_crud_get_user_from_email(session):
     assert userFromEmail == db_user
     assert userFromEmail == user
     assert userFromEmail.id == db_user.id
+    assert type(userFromEmail) == User
