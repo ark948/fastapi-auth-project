@@ -15,7 +15,7 @@ from src.apps.users.router import router as users_router
 # other imports
 from contextlib import asynccontextmanager
 from typing import Annotated
-from flask_sub_app.run import app as flask_app
+from sub_app_v1.run import app as flask_app
 
 
 @asynccontextmanager

@@ -4,11 +4,11 @@ from src.apps.auth.sqlmodels import UpdateUserSQLModel
 from src.apps.auth.models import User
 from src.apps.auth.hash import hash_plain_password
 from src.apps.auth.utils import generateOtp
-from src.db import SessionDep
+from src.db import SessionDep, engine
 
 # other imports
 from fastapi import HTTPException, status
-from sqlmodel import select
+from sqlmodel import select, Session
 
 def get_all(session: SessionDep) -> list:
     statement = select(User)
@@ -67,7 +67,8 @@ def delete(id: int, session: SessionDep) -> None:
     return {"ok": True}
 
 
-def get_user_from_email(email: str, db: SessionDep) -> User:
+# this fucntion is broken
+def get_user_from_email_error(email: str, db: SessionDep) -> User:
     statement = select(User).where(User.email == email)
     results = db.exec(statement)
     for user in results:

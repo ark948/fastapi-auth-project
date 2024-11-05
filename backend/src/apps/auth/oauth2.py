@@ -1,5 +1,5 @@
 # local imports
-from src.apps.auth import crud as user_crud
+from src.apps.auth.models import User
 from src.apps.auth.tokens import TokenData
 from src.db import SessionDep
 from src.apps.auth.hash import verify_password
@@ -16,15 +16,24 @@ from typing import Annotated
 from jwt.exceptions import InvalidTokenError
 import jwt
 
+from sqlmodel import select
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 
 def get_user(email: str, session: SessionDep):
-    return user_crud.get_user_from_email(email, session)
+    statement = select(User).where(User.email == email)
+    results = session.exec(statement)
+    for user in results:
+        if not user:
+            raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail=f"User with {email} was not found.")
+        return user
 
 
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], session: SessionDep):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -32,13 +41,13 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     )
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
+        email: str = payload.get("sub")
+        if email is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = TokenData(email=email)
     except InvalidTokenError:
         raise credentials_exception
-    user = get_user(email=token_data.email)
+    user = get_user(email=token_data.email, session=session)
     if user is None:
         raise credentials_exception
     return user

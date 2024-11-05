@@ -1,7 +1,7 @@
 # local imports
 from src.apps.auth.models import User
 from src.apps.auth.tokens import Token, create_access_token
-from src.apps.auth.oauth2 import authenticate_user
+from src.apps.auth.oauth2 import authenticate_user, get_current_user
 from src.apps.auth.sqlmodels import UpdateUserSQLModel
 from src.apps.auth import crud
 from src.db import SessionDep
@@ -15,7 +15,7 @@ from src.apps.auth.constants import (
 # fastapi imports
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import (
-    APIRouter, status, HTTPException, Depends
+    APIRouter, status, HTTPException, Depends, Request
 )
 
 # other imports
@@ -30,8 +30,8 @@ router = APIRouter(
 
 
 @router.get('/test-route')
-def test_route():
-    return {'message': "Testing auth app..."}
+def test_route(session: SessionDep, current_user: User=Depends(get_current_user)):
+    return {'message': f"Testing auth app... Current User ID: {current_user.id}"}
 
 
 @router.get('/get-all-users', response_model=List[ShowUser], status_code=status.HTTP_200_OK)
@@ -45,7 +45,7 @@ def create_user(request: CreateUser, session: SessionDep) -> User:
 
 
 @router.get('/{id}', response_model=ShowUser, status_code=status.HTTP_200_OK)
-def get_user(id: int, session: SessionDep) -> User:
+def get_user_route(id: int, session: SessionDep) -> User:
     return crud.show(id, session)
 
 
@@ -84,9 +84,7 @@ def verify_user_account(id: int, request: VerifyUser, session: SessionDep) -> di
 
 @router.post("/login", status_code=status.HTTP_200_OK)
 async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    session: SessionDep
-    ) -> Token:
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()], session: SessionDep) -> Token:
     user = authenticate_user(email=form_data.username, password=form_data.password, session=session)
     if not user:
         raise HTTPException(
@@ -95,7 +93,6 @@ async def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token_expires = timedelta(minutes=int(ACCESS_TOKEN_EXPIRE_MINUTES))
-    access_token = create_access_token(
-        data={"sub": user.email}, expires_delta=access_token_expires
-    )
-    return Token(access_token=access_token, token_type="bearer")
+    access_token = create_access_token(data={"sub": user.email}, expires_delta=access_token_expires)
+    token = Token(access_token=access_token, token_type="bearer")
+    return token
