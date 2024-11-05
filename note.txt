@@ -88,3 +88,6 @@ adding registration form (may not work):
 - pip install wtforms
 - added forms.py to users app
 - register.html
+
+
+- wrap a flask app using WSGIMiddleware

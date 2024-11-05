@@ -1,8 +1,6 @@
-from contextlib import asynccontextmanager
-from typing import Annotated
-
 # fastapi imports
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.wsgi import WSGIMiddleware
 from fastapi import (
     FastAPI, Request, Depends
 )
@@ -13,6 +11,11 @@ from src.apps.pages.router import router as pages_router
 from src.apps.auth.router import router as auth_router
 from src.apps.auth.oauth2 import oauth2_scheme
 from src.apps.users.router import router as users_router
+
+# other imports
+from contextlib import asynccontextmanager
+from typing import Annotated
+from flask_sub_app.run import app as flask_app
 
 
 @asynccontextmanager
@@ -30,6 +33,8 @@ app.include_router(auth_router)
 app.include_router(pages_router)
 app.include_router(users_router)
 
+
+app.mount("/v1", WSGIMiddleware(flask_app))
 
 
 # test this route to check if pytest works
