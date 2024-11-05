@@ -99,3 +99,61 @@ def test_activate_user(session, client):
     assert data['id'] == 1
     assert data['email'] == 'test1@test.com'
     assert data['is_active'] == True
+
+
+def test_get_user(session, client):
+    vcode = generateOtp()
+    user = User(email='test1@test.com', password='123', vcode=vcode)
+    session.add(user)
+    session.commit()
+
+    response = client.get('/auth/1')
+    assert response.status_code == 200
+
+    data = response.json()
+    assert data['id'] == 1
+    assert data['email'] == 'test1@test.com'
+
+
+def test_update_user(session, client):
+    vcode = generateOtp()
+    user = User(email='test1@test.com', password='123', vcode=vcode)
+    session.add(user)
+    session.commit()
+
+    response = client.patch('/auth/1', json={'first_name': "Neal"})
+    assert response.status_code == 202
+    data = response.json()
+    assert data['message'] == 'User with 1 updated.'
+
+    response = client.get('/auth/1')
+    assert response.status_code == 200
+    data = response.json()
+    assert data['email'] == 'test1@test.com'
+    assert data['first_name'] == 'Neal'
+
+
+def test_delete_user(session, client):
+    response = client.get('/auth/get-all-users')
+    assert response.status_code == 200
+    data = response.json()
+    assert data == []
+
+    user = User(email='test1@test.com', password='123', vcode=generateOtp())
+    session.add(user)
+    session.commit()
+
+    response = client.get('/auth/get-all-users')
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) == 1
+
+    response = client.delete('/auth/1')
+    assert response.status_code == 200
+    data = response.json()
+    assert data['ok'] == True
+
+    response = client.get('/auth/get-all-users')
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data) == 0
