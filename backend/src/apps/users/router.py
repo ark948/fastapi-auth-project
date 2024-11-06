@@ -29,9 +29,7 @@ def index():
 def register(request: Request):
     form = RegistrationForm()
     print(form)
-    return TemplateResponse(
-        request=request, name='users/register.html', context={'request': request,'form': form,}
-        )
+    return TemplateResponse(request=request, name='users/register.html', context={'request': request,'form': form,})
 
 
 @router.post('/process-register')

@@ -30,8 +30,13 @@ router = APIRouter(
 
 
 @router.get('/test-route')
-def test_route(session: SessionDep, current_user: User=Depends(get_current_user)):
+def test_route(session: SessionDep, current_user: User = Depends(get_current_user)):
     return {'message': f"Testing auth app... Current User ID: {current_user.id}"}
+
+
+@router.post('/test-route')
+def test_route_post(message: str, session: SessionDep, current_user: User = Depends(get_current_user)):
+    return {"input": message, "message": "Your message has been received"}
 
 
 @router.get('/get-all-users', response_model=List[ShowUser], status_code=status.HTTP_200_OK)
