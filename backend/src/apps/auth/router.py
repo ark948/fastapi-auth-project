@@ -19,6 +19,7 @@ from fastapi import (
 )
 
 # other imports
+from pydantic import EmailStr
 from typing import Annotated, List
 from datetime import timedelta
 
@@ -85,6 +86,11 @@ def verify_user_account(id: int, request: VerifyUser, session: SessionDep) -> di
         return {"message": "User already verified."}
     else:
         return {"message": "Code is invalid."}
+    
+
+@router.get('/password-reset-request', status_code=status.HTTP_200_OK)
+def send_password_request(email: EmailStr):
+    user = None
 
 
 @router.post("/login", status_code=status.HTTP_200_OK)

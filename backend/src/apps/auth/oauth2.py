@@ -2,6 +2,7 @@
 from src.apps.auth.models import User
 from src.apps.auth.tokens import TokenData
 from src.db import SessionDep
+from src.apps.auth.crud import get_user_from_email
 from src.apps.auth.hash import verify_password
 from src.apps.auth.constants import (
     SECRET_KEY, ALGORITHM
@@ -23,14 +24,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
 
 def get_user(email: str, session: SessionDep):
-    statement = select(User).where(User.email == email)
-    results = session.exec(statement)
-    for user in results:
-        if not user:
-            raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, 
-            detail=f"User with {email} was not found.")
-        return user
+    return get_user_from_email(email, session)
 
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], session: SessionDep):

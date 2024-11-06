@@ -67,10 +67,9 @@ def delete(id: int, session: SessionDep) -> None:
     return {"ok": True}
 
 
-# this fucntion is broken
-def get_user_from_email_error(email: str, db: SessionDep) -> User:
+def get_user_from_email(email: str, session: SessionDep) -> User:
     statement = select(User).where(User.email == email)
-    results = db.exec(statement)
+    results = session.exec(statement)
     for user in results:
         if not user:
             raise HTTPException(
