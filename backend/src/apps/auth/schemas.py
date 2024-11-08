@@ -38,7 +38,7 @@ class SuccessMessage(BaseModel):
     message: str
 
 
-class ResetForegetPassword(BaseModel):
+class SetNewPassword(BaseModel):
     secret_token: str
     new_password: str
     confirm_password: str

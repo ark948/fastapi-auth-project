@@ -7,7 +7,7 @@ from src.apps.auth import crud
 from src.apps.auth.hash import hash_plain_password
 from src.db import SessionDep
 from src.apps.auth.schemas import (
-    ShowUser, CreateUser, VerifyUser, ForgetPasswordRequest, SuccessMessage, ResetForegetPassword
+    ShowUser, CreateUser, VerifyUser, ForgetPasswordRequest, SuccessMessage, SetNewPassword
 )
 from src.apps.auth.constants import (
     ACCESS_TOKEN_EXPIRE_MINUTES
@@ -107,19 +107,19 @@ def send_password_request(request: ForgetPasswordRequest, session: SessionDep):
 
 
 @router.post("/reset-password", response_model=SuccessMessage)
-async def reset_password(rfp: ResetForegetPassword, db: SessionDep):
+async def reset_password(request: SetNewPassword, db: SessionDep):
     try:
-        info = decode_reset_password_token(token=rfp.secret_token)
+        info = decode_reset_password_token(token=request.secret_token)
         if info is None:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Invalid Password Reset Payload or Reset Link Expired")
-        if rfp.new_password != rfp.confirm_password:
+        if request.new_password != request.confirm_password:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
                 detail="New password and confirm password are not same.")
 
-        hashed_password = hash_plain_password(rfp.new_password)
+        hashed_password = hash_plain_password(request.new_password)
         user = crud.get_user_from_email(email=info, session=db)
         user.password = hashed_password
         db.add(user)
