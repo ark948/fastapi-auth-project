@@ -1,4 +1,12 @@
 import random
+from datetime import datetime, timedelta
+import jwt
+
+from src.apps.auth.constants import (
+    SECRET_KEY, ALGORITHM
+)
+
+
 
 def generateOtp() -> str:
     otp = ""

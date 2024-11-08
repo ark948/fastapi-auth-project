@@ -1,6 +1,8 @@
 from datetime import timedelta, timezone, datetime
 from pydantic import BaseModel
+from jose import JWTError
 import jwt
+
 
 # local imports
 from src.apps.auth.constants import (
@@ -28,3 +30,19 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     email: str | None = None
+
+
+
+def create_reset_password_token(email: str):
+    data = {"sub": email, "exp": datetime.now(timezone.utc) + timedelta(minutes=10)}
+    token = jwt.encode(data, SECRET_KEY, ALGORITHM)
+    return token
+
+
+def decode_reset_password_token(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        return email
+    except JWTError:
+        return None 

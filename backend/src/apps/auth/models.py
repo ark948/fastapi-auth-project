@@ -13,3 +13,7 @@ class User(UserBase, table=True):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     vcode: str = Field(default=None)
+
+
+
+

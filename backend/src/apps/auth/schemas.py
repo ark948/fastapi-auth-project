@@ -25,3 +25,20 @@ class CreateUser(BaseModel):
 
 class VerifyUser(BaseModel):
     vcode: str
+
+
+
+class ForgetPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class SuccessMessage(BaseModel):
+    success: bool
+    status_code: int
+    message: str
+
+
+class ResetForegetPassword(BaseModel):
+    secret_token: str
+    new_password: str
+    confirm_password: str

@@ -91,3 +91,14 @@ adding registration form (may not work):
 
 
 - wrap a flask app using WSGIMiddleware
+
+
+
+
+- password reset mechanism:
+install:
+pip install python-jose[cryptography]
+pip install fastapi-mail
+- endpoint 1: generating unique links
+1 model added to auth>schemas.py
+1 func added auth>utils.py

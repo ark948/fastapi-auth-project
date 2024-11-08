@@ -1,21 +1,23 @@
 # local imports
 from src.apps.auth.models import User
-from src.apps.auth.tokens import Token, create_access_token
+from src.apps.auth.tokens import Token, create_access_token, decode_reset_password_token, create_reset_password_token
 from src.apps.auth.oauth2 import authenticate_user, get_current_user
 from src.apps.auth.sqlmodels import UpdateUserSQLModel
 from src.apps.auth import crud
+from src.apps.auth.hash import hash_plain_password
 from src.db import SessionDep
 from src.apps.auth.schemas import (
-    ShowUser, CreateUser, VerifyUser
+    ShowUser, CreateUser, VerifyUser, ForgetPasswordRequest, SuccessMessage, ResetForegetPassword
 )
 from src.apps.auth.constants import (
     ACCESS_TOKEN_EXPIRE_MINUTES
 )
 
 # fastapi imports
+from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import (
-    APIRouter, status, HTTPException, Depends, Request
+    APIRouter, status, HTTPException, Depends
 )
 
 # other imports
@@ -88,9 +90,43 @@ def verify_user_account(id: int, request: VerifyUser, session: SessionDep) -> di
         return {"message": "Code is invalid."}
     
 
-@router.get('/password-reset-request', status_code=status.HTTP_200_OK)
-def send_password_request(email: EmailStr):
-    user = None
+@router.post('/forgot-password')
+def send_password_request(request: ForgetPasswordRequest, session: SessionDep):
+    user = crud.get_user_from_email(email=request.email, session=session)
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Email was not found.",)
+    secret_token = create_reset_password_token(email=user.email)
+    forget_url_link = f"http://127.0.0.1:8000/auth/forgot-password/{secret_token}"
+    email_body = { "company_name": "my stuff",
+                       "link_expiry_min": 10,
+                       "reset_link": forget_url_link }
+    # could not find anyting similar to console email backend
+    # gonna have to just print the link
+    print(f"\n\n{secret_token}\n\n")
+    return JSONResponse(status_code=status.HTTP_200_OK, content={"message": "Email has been sent"})
+
+
+@router.post("/reset-password", response_model=SuccessMessage)
+async def reset_password(rfp: ResetForegetPassword, db: SessionDep):
+    try:
+        info = decode_reset_password_token(token=rfp.secret_token)
+        if info is None:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Invalid Password Reset Payload or Reset Link Expired")
+        if rfp.new_password != rfp.confirm_password:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, 
+                detail="New password and confirm password are not same.")
+
+        hashed_password = hash_plain_password(rfp.new_password)
+        user = crud.get_user_from_email(email=info, session=db)
+        user.password = hashed_password
+        db.add(user)
+        db.commit()
+        return {'success': True, 'status_code': status.HTTP_200_OK, 'message': 'Password Rest Successfull!'}
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Some thing unexpected happened!")
 
 
 @router.post("/login", status_code=status.HTTP_200_OK)
