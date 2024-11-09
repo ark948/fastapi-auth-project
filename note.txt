@@ -102,3 +102,9 @@ pip install fastapi-mail
 - endpoint 1: generating unique links
 1 model added to auth>schemas.py
 1 func added auth>utils.py
+- endpoint 2: processing the token and setting new password
+
+
+packaging and dockerizing:
+to distribute this entire application, containerization should be used.
+but for a small part that only contains code (aka a library) python packaging should be used.

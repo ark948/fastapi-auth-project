@@ -1,5 +1,6 @@
 # local imports
 from src.apps.users.forms import RegistrationForm
+from src.apps.users.schemas import RegisterUser
 
 # fastapi imports
 from fastapi.responses import HTMLResponse
@@ -26,14 +27,17 @@ def index():
 
 
 @router.get('/register', response_class=HTMLResponse)
-def register(request: Request):
+def register_html(request: Request):
     form = RegistrationForm()
     print(form)
     return TemplateResponse(request=request, name='users/register.html', context={'request': request,'form': form,})
 
 
 @router.post('/process-register')
-def register_post(request: Request):
+def register_process_html(request: Request):
     return None
 
 
+@router.get('/register', status_code=status.HTTP_201_CREATED)
+def register(request: RegisterUser):
+    return

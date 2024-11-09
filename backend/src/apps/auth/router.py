@@ -131,7 +131,9 @@ async def reset_password(request: SetNewPassword, db: SessionDep):
 
 @router.post("/login", status_code=status.HTTP_200_OK)
 async def login_for_access_token(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()], session: SessionDep) -> Token:
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()], 
+    session: SessionDep
+    ) -> Token:
     user = authenticate_user(email=form_data.username, password=form_data.password, session=session)
     if not user:
         raise HTTPException(
